@@ -19,7 +19,7 @@ public class DotaVoiceLinesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [Route("/all")]
+    [Route("all")]
     public async Task<IActionResult> GetAllVoiceLines()
     {
         var query = new GetAllVoiceLinesQuery();
@@ -32,7 +32,7 @@ public class DotaVoiceLinesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [Route("/random")]
+    [Route("random")]
     public async Task<IActionResult> GetRandomVoiceLine()
     {
         var query = new GetRandomVoiceLineQuery();
@@ -45,7 +45,7 @@ public class DotaVoiceLinesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [Route("/limit/{limit}")]
+    [Route("limit/{limit}")]
     public async Task<IActionResult> GetAllLimit([FromRoute] int limit)
     {
         var query = new GetLimitedVoiceLinesQuery(limit);
@@ -59,7 +59,7 @@ public class DotaVoiceLinesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [Route("/{id}")]
+    [Route("{id}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var query = new GetVoiceLineByIdQuery(id);
