@@ -23,6 +23,13 @@ try
     Log.Information("Starting up...");
 
     var builder = WebApplication.CreateBuilder(args);
+
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenAnyIP(5121);
+        
+    });
+
     
 
     builder.Host.UseSerilog(); // Pasang setelah builder
@@ -143,11 +150,9 @@ try
 
     var app = builder.Build();
 
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
 
     app.UseRouting();
     app.UseMiddleware<ApiLoggingMiddleware>();
