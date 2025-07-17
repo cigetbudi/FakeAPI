@@ -1,6 +1,6 @@
 using Dapper;
 using FakeAPI.Application.Common.Interfaces;
-using FakeAPI.Domain.Entities.Common;
+using FakeAPI.Domain.Entities;
 using Microsoft.Extensions.Logging;
 
 namespace FakeAPI.Infrastructure.Persistence.Repositories;
@@ -83,7 +83,7 @@ public class DotaVoiceLineRepository : IDotaVoiceLineRepository
         }
     }
 
-    public async Task<DotaVoiceline> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<DotaVoiceline?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         using var activity = _tracer.StartActivity("DotaVoiceLineRepository:GetByIdAsync");
         const string sql = """
@@ -104,22 +104,15 @@ public class DotaVoiceLineRepository : IDotaVoiceLineRepository
                 new CommandDefinition(sql, new { Id = id }, cancellationToken: cancellationToken)
             );
 
-            if (result != null)
-            {
-                return result;
-            }
-
-            var except = new Exception("not found");
-            _logger.LogError(except, "Error in GetByIdAsync");
-            throw new Exception(except.Message);
+            return result;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error in GetByIdAsync");
             throw;
         }
-
     }
+
 
     public async Task<DotaVoiceline> GetRandomAsync(CancellationToken cancellationToken)
     {

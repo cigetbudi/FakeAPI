@@ -16,9 +16,11 @@ public static class DependencyInjection
     {
         // Koneksi db
         services.AddSingleton<DbConnectionFactory>();
+        services.AddSingleton<DbFakeApiConnectionFactory>();
 
         // Repo Product (urusan ke DB)
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IDotaVoiceLineRepository, DotaVoiceLineRepository>();
         // Repo Logging (ke db juga)
         services.AddScoped<ILoggingRepository, LoggingRepository>();
         services.AddScoped<IExternalApiLoggingRepository, ExternalApiLoggingRepository>();

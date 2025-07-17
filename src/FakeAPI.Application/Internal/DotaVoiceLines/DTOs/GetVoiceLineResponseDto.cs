@@ -1,12 +1,9 @@
-namespace FakeAPI.Domain.Entities.Common;
+namespace FakeAPI.Application.Internal.DotaVoiceLines.DTOs;
 
-public class DotaVoiceline
+public class GetVoiceLineResponseDto
 {
     public int Id { get; set; }
-
     public string VoiceLine { get; set; } = string.Empty;
-
     public string HeroName { get; set; } = string.Empty;
-
-    public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+    public int Length { get; set; }
 }

@@ -1,5 +1,6 @@
 using AutoMapper;
 using FakeAPI.Application.External.ProductApi.DTOs;
+using FakeAPI.Application.Internal.DotaVoiceLines.DTOs;
 using FakeAPI.Application.Internal.Products.DTOs;
 using FakeAPI.Domain.Entities;
 
@@ -21,6 +22,9 @@ public class MappingProfile : Profile
 
         // Mapping dari Response API Eksternal ke DTO Response
         CreateMap<ProductApiResponseDto, CreateProductResponseDto>();
+
+        CreateMap<DotaVoiceline, GetVoiceLineResponseDto>()
+            .ForMember(dest => dest.Length, opt => opt.MapFrom(src => src.VoiceLine.Length));
     }
 }
 
