@@ -26,7 +26,7 @@ public class GetLimitedVoiceLinesQueryHandler : IRequestHandler<GetLimitedVoiceL
             var data = await _dotaVoiceLineRepository.GetAllLimitedAsync(request.Limit, cancellationToken);
             var responseData = _mapper.Map<List<GetVoiceLineResponseDto>>(data);
 
-                        _logger.LogInformation("Voice Lines Limited successfully retrieved");
+            _logger.LogInformation("Voice Lines Limited successfully retrieved");
             return ApiResponse<List<GetVoiceLineResponseDto>>.SuccessOK("Success", responseData);
         }
         catch (Exception ex)

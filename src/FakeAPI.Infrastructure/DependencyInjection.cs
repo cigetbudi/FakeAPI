@@ -1,5 +1,6 @@
 using FakeAPI.Application.Common.Interfaces;
 using FakeAPI.Infrastructure.Common.ExternalApiLogging;
+using FakeAPI.Infrastructure.Common.JWT;
 using FakeAPI.Infrastructure.Common.Library;
 using FakeAPI.Infrastructure.Common.Tracing;
 using FakeAPI.Infrastructure.Persistence;
@@ -28,7 +29,6 @@ public static class DependencyInjection
         // Service Product (urusan ke External Api)
         services.AddScoped<IExternalProductService, ExternalProductService>();
 
-        // Library
         // Tracer
         services.AddScoped<ITracer, Tracer>();
         services.AddTransient<HttpClientTracingHandler>();
@@ -43,8 +43,12 @@ public static class DependencyInjection
                 var exloggingRepo = sp.GetRequiredService<IExternalApiLoggingRepository>();
                 return new ExternalApiLoggingHandler(logger, library, exloggingRepo, "ProductApiService");
             })
-            .AddHttpMessageHandler<HttpClientTracingHandler>(); 
+            .AddHttpMessageHandler<HttpClientTracingHandler>();
 
+        // Common
+        services.AddScoped<IJWTService, JWTService>();
+
+        // Library
         services.AddScoped<ILibrary, Library>();
 
         return services;

@@ -1,16 +1,19 @@
 using FakeAPI.Application.Internal.DotaVoiceLines.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FakeAPI.Api.Controllers;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiController]
 [Route("api/[controller]")]
-public class DotaVoiceLinesController : ControllerBase
+public class DotaVoiceLinesJWTController : ControllerBase
 {
     private readonly ISender _mediator;
 
-    public DotaVoiceLinesController(ISender mediator)
+    public DotaVoiceLinesJWTController(ISender mediator)
     {
         _mediator = mediator;
     }
@@ -27,7 +30,7 @@ public class DotaVoiceLinesController : ControllerBase
 
         return Ok(result);
     }
-
+    
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -54,12 +57,11 @@ public class DotaVoiceLinesController : ControllerBase
         return Ok(result);
     }
 
-
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [Route("id/{id}")]
+    [Route("id{id}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var query = new GetVoiceLineByIdQuery(id);
@@ -67,4 +69,6 @@ public class DotaVoiceLinesController : ControllerBase
 
         return Ok(result);
     }
+
+
 }

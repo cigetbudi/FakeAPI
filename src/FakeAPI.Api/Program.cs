@@ -10,6 +10,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using App = FakeAPI.Application;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 
 
@@ -130,7 +131,26 @@ try
         }
     });
 
-    //FluentValidation
+    // Bearer token JWT
+    builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        var config = builder.Configuration;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = config["JwtSettings:Issuer"],
+            ValidAudience = config["JwtSettings:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!))
+        };
+    });
+
+    builder.Services.AddAuthorization();
+
+    // FluentValidation
     builder.Services.AddValidatorsFromAssembly(typeof(App.DependencyInjection).Assembly);
     builder.Services.AddFluentValidationAutoValidation();
     builder.Services.AddFluentValidationClientsideAdapters();
@@ -146,13 +166,45 @@ try
 
     
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new() { Title = "FakeAPI.Api", Version = "v1" });
+
+        // 🔒 Tambahkan ini
+        c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+            Description = "Input your bearer token from /api/login. Contoh: Bearer eyJhbGciOiJIUzI1NiIs..."
+        });
+
+        c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+        {
+            {
+                new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                    {
+                        Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] {}
+            }
+        });
+    });
+
 
     var app = builder.Build();
 
     app.UseSwagger();
     app.UseSwaggerUI();
 
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.UseRouting();
     app.UseMiddleware<ApiLoggingMiddleware>();

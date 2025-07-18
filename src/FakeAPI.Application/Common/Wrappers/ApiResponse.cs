@@ -24,8 +24,11 @@ public class ApiResponse<T>
 
     public static ApiResponse<T> FailNotFound(string message, string code = "404") =>
     new(code, message, default);
-    
+
     public static ApiResponse<T> FailBadRequest(string message) =>
     new("400", message, default);
+    
+    public static ApiResponse<T> Unauthorized(string message) =>
+    new("401", message, default);
 }
 
