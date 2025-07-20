@@ -1,0 +1,28 @@
+@page "/api-docs/dota-voice-lines/plain"
+@using FakeAPI.BlazorWasm.Pages.Components.ApiContent
+
+<RadzenHeading Size="H2" Text="📘 Dota Voice Lines Bearer API Docs" />
+
+<ApiContentAuthComponent></ApiContentAuthComponent>
+<ApiContentListTableComponent TItem="EndpointSpec" Endpoints="@Endpoints"></ApiContentListTableComponent>
+<ApiContentSampleComponent></ApiContentSampleComponent>
+
+@code {
+    class EndpointSpec
+    {
+        public string Method { get; set; } = "";
+        public string Path { get; set; } = "";
+        public string Description { get; set; } = "";
+        public bool RequiresAuth { get; set; } = true;
+        public string ResponseCode { get; set; } = "200 OK";
+    }
+
+    List<EndpointSpec> Endpoints = new()
+    {
+        new() { Method = "POST", Path = "/api/auth/login", Description = "Login dan dapatkan JWT token", RequiresAuth = false, ResponseCode = "200 OK" },
+        new() { Method = "GET", Path = "/api/products", Description = "Ambil semua produk", RequiresAuth = true, ResponseCode = "200 OK" },
+        new() { Method = "POST", Path = "/api/products", Description = "Tambah produk baru", RequiresAuth = true, ResponseCode = "201 Created" },
+        new() { Method = "PUT", Path = "/api/products/{id}", Description = "Update produk", RequiresAuth = true, ResponseCode = "204 No Content" },
+        new() { Method = "DELETE", Path = "/api/products/{id}", Description = "Hapus produk", RequiresAuth = true, ResponseCode = "204 No Content" }
+    };
+}

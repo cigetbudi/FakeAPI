@@ -1,0 +1,29 @@
+@using FakeAPI.BlazorWasm.Pages.Components.SIdebar
+
+<RadzenPanelMenu Multiple="@multiple">
+    <RadzenPanelMenuItem Text="Home" Icon="home" Path="/"></RadzenPanelMenuItem>
+    <RadzenPanelMenuItem Text="Counter" Icon="timer" Path="/counter"></RadzenPanelMenuItem>
+    <RadzenPanelMenuItem Text="API Documentation" Icon="developer_guide">
+        <RadzenPanelMenuItem Text="Dota Voice Lines" Icon="voice_selection">
+            <RadzenPanelMenuItem Text="Plain" Icon="no_encryption">
+                <RadzenPanelMenuItem Path="/api-docs/dota-voice-lines/plain">
+                    <Template>
+                        <ApiMenuItem Method="GET">Get All</ApiMenuItem>
+                    </Template>
+                </RadzenPanelMenuItem>
+            </RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Bearer" Icon="key">
+                <RadzenPanelMenuItem Path="/api-docs/dota-voice-lines/bearer">
+                    <Template>
+                        <ApiMenuItem Method="GET">Get All</ApiMenuItem>
+                    </Template>
+                </RadzenPanelMenuItem>
+            </RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+    </RadzenPanelMenuItem>
+</RadzenPanelMenu>
+
+
+@code {
+    bool multiple = true;
+}

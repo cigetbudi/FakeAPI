@@ -1,0 +1,34 @@
+﻿@inherits LayoutComponentBase
+<RadzenComponents />
+<HeadContent>
+    <RadzenTheme Theme="humanistic" />
+</HeadContent>
+<RadzenLayout>
+   <RadzenHeader>
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <div style="display: flex; align-items: center;">
+            <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
+            <RadzenImage Path="logo-fakeapi.png" Style="width: 10rem;" AlternateText="FakeApiLogo"></RadzenImage>
+        </div>
+        <div>
+            <RadzenAppearanceToggle />
+        </div>
+    </div>
+</RadzenHeader>
+
+    <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
+       <SidebarMenu></SidebarMenu>
+    </RadzenSidebar>
+    <RadzenBody>
+        <div class="rz-p-4">
+            @Body
+        </div>
+    </RadzenBody>
+    <RadzenFooter>
+        Footer
+    </RadzenFooter>
+</RadzenLayout>
+
+@code {
+    bool sidebar1Expanded = true;
+}

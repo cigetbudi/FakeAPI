@@ -1,0 +1,64 @@
+@typeparam TItem
+
+<RadzenCard>
+    <RadzenHeading Size="H4" Text="📦 Endpoint List" />
+
+    <RadzenDataGrid Data="@Endpoints" TItem="TItem" ShowPagingSummary="false" ShowPagination="false">
+        <Columns>
+            <RadzenDataGridColumn TItem="TItem" Title="Method" Width="80px">
+                <Template Context="data">
+                    <RadzenBadge Text="@GetMethod(data)" Color="@GetMethodColor(GetMethod(data))" />
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="TItem" Property="Path" Title="Path" />
+            <RadzenDataGridColumn TItem="TItem" Property="Description" Title="Description" />
+            <RadzenDataGridColumn TItem="TItem" Title="Auth" Width="100px">
+                <Template Context="data">
+                    @if ((bool)data.GetType().GetProperty("RequiresAuth")?.GetValue(data)!)
+                    {
+                        <RadzenBadge Text="JWT" Color="Dark" />
+                    }
+                    else
+                    {
+                        <RadzenBadge Text="Public" Color="Light" />
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="TItem" Title="Response" Width="120px">
+                <Template Context="data">
+                    <RadzenBadge Text="@GetCode(data)" Color="@GetResponseColor(GetCode(data))" />
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+</RadzenCard>
+
+@code {
+    [Parameter] public IEnumerable<TItem> Endpoints { get; set; } = [];
+
+    string GetMethod(TItem data) =>
+        data?.GetType().GetProperty("Method")?.GetValue(data)?.ToString() ?? "";
+
+    string GetCode(TItem data) =>
+        data?.GetType().GetProperty("ResponseCode")?.GetValue(data)?.ToString() ?? "";
+
+    string GetMethodColor(string method) => method.ToUpper() switch
+    {
+        "GET" => "Info",
+        "POST" => "Success",
+        "PUT" => "Warning",
+        "DELETE" => "Danger",
+        _ => "Secondary"
+    };
+
+    string GetResponseColor(string code) => code.Split(' ')[0] switch
+    {
+        "200" => "Success",
+        "201" => "Primary",
+        "204" => "Info",
+        "400" => "Warning",
+        "401" => "Danger",
+        "500" => "Danger",
+        _ => "Light"
+    };
+}

@@ -1,0 +1,19 @@
+@inherits LayoutComponentBase
+
+<div class="menu-item-label">
+    <span class="http-method @MethodColor">@Method</span>
+    <span>@ChildContent</span>
+</div>
+
+@code {
+    [Parameter] public string Method { get; set; } = "GET";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string MethodColor => Method.ToLower() switch {
+        "get" => "http-get",
+        "post" => "http-post",
+        "put" => "http-put",
+        "delete" => "http-delete",
+        _ => "http-get"
+    };
+}

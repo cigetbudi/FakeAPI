@@ -1,0 +1,94 @@
+@using System.Text.Json
+@using Microsoft.AspNetCore.Components
+
+<RadzenCard Style="margin-bottom: 20px;">
+    <RadzenHeading Size="H4" Text="@Title" />
+    <p>@Description</p>
+
+    <RadzenHeading Size="H4" Text="🔗 Path" Style="margin-top: 20px;" />
+    <RadzenLabel Text="@Endpoint" Style="font-weight: bold;" />
+
+    @if (ParamSpecs?.Any() == true)
+    {
+        <RadzenHeading Size="H4" Text="📗 API Request Specification" Style="margin-top: 30px;" />
+
+        <RadzenDataGrid 
+            Data="@ParamSpecs" 
+            TItem="ApiParamSpec" 
+            ShowPagingSummary="false" 
+            ShowPagination="false" 
+            Style="margin-top: 10px;">
+            <Columns>
+                <RadzenDataGridColumn TItem="ApiParamSpec" Property="Name" Title="Name" />
+                <RadzenDataGridColumn TItem="ApiParamSpec" Property="DataType" Title="Type" />
+                <RadzenDataGridColumn TItem="ApiParamSpec" Property="MaxLength" Title="Length" />
+                <RadzenDataGridColumn TItem="ApiParamSpec" Property="Notes" Title="Description" />
+            </Columns>
+        </RadzenDataGrid>
+
+        <RadzenHeading Size="H4" Text="✅ Example" Style="margin-top: 20px;" />
+        <RadzenCard Style="margin-top: 10px;">
+            <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">
+@SampleJson
+            </pre>
+        </RadzenCard>
+    }
+
+    @if (ParamSpecsResponse?.Any() == true)
+    {
+        <RadzenHeading Size="H4" Text="📗 API Response Specification" Style="margin-top: 40px;" />
+
+        <RadzenDataGrid 
+            Data="@ParamSpecsResponse" 
+            TItem="ApiParamSpecResponse" 
+            ShowPagingSummary="false" 
+            ShowPagination="false" 
+            Style="margin-top: 10px;">
+            <Columns>
+                <RadzenDataGridColumn TItem="ApiParamSpecResponse" Property="Name" Title="Name" />
+                <RadzenDataGridColumn TItem="ApiParamSpecResponse" Property="DataType" Title="Type" />
+                <RadzenDataGridColumn TItem="ApiParamSpecResponse" Property="Notes" Title="Description" />
+            </Columns>
+        </RadzenDataGrid>
+
+        <RadzenHeading Size="H4" Text="✅ Example" Style="margin-top: 20px;" />
+        <RadzenHeading Size="H5" Text="🟢 Successfull HTTP Status : 200" Style="margin-top: 20px;" />
+          <RadzenCard Style="margin-top: 10px;">
+              <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">
+      @SampleJsonResponseSuccess
+              </pre>
+        </RadzenCard>
+        <RadzenHeading Size="H5" Text="🔴 Failed HTTP Status : 401" Style="margin-top: 20px;" />
+          <RadzenCard Style="margin-top: 10px;">
+              <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">
+      @SampleJsonResponseFailed
+              </pre>
+        </RadzenCard>
+    }
+</RadzenCard>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string Description { get; set; } = "";
+    [Parameter] public string Endpoint { get; set; } = "";
+    [Parameter] public string SampleJson { get; set; } = "";
+    [Parameter] public string? SampleJsonResponseSuccess { get; set; }
+    [Parameter] public string? SampleJsonResponseFailed { get; set; }
+    [Parameter] public List<ApiParamSpec>? ParamSpecs { get; set; }
+    [Parameter] public List<ApiParamSpecResponse>? ParamSpecsResponse { get; set; }
+
+    public class ApiParamSpec
+    {
+        public string Name { get; set; } = "";
+        public string DataType { get; set; } = "";
+        public string MaxLength { get; set; } = "";
+        public string Notes { get; set; } = "";
+    }
+
+    public class ApiParamSpecResponse
+    {
+        public string Name { get; set; } = "";
+        public string DataType { get; set; } = "";
+        public string Notes { get; set; } = "";
+    }
+}
