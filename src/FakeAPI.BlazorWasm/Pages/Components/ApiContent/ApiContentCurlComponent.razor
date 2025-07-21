@@ -1,0 +1,21 @@
+
+
+<RadzenCard AllowCollapse="true" Collapsed="@isCollapsed" Style="margin-top: 1rem;">
+    <HeaderTemplate>
+        <RadzenHeading Size="H4">
+            💻 Curl Example
+        </RadzenHeading>
+    </HeaderTemplate>
+    <ChildContent>
+        <RadzenCode>
+            @Curl
+        </RadzenCode>
+    </ChildContent>
+</RadzenCard>
+
+@code {
+    [Parameter]
+    public string Curl { get; set; } = string.Empty;
+
+    private bool isCollapsed = false;
+}

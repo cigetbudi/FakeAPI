@@ -19,11 +19,10 @@
     ParamSpecs="@LoginParamSpecs"
     ParamSpecsResponse="@LoginResponseSpecs" />
 
-<ApiContentListTableComponent TItem="EndpointSpec" Endpoints="@Endpoints" />
-<ApiContentSampleComponent />
+<ApiContentListTableComponent TItem="Dictionary<string, object>" Endpoints="@Endpoints" />
+
 
 @code {
-
     private string LoginResponseExampleSuccess = JsonSerializer.Serialize(new 
     {
         responseCode = "200",
@@ -39,34 +38,28 @@
         responseMessage = "Invalid username or password",
     }, new JsonSerializerOptions { WriteIndented = true });
 
-    private List<ApiContentAuthComponent.ApiParamSpec> LoginParamSpecs = new()
+    private List<Dictionary<string, string>> LoginParamSpecs = new()
     {
-        new() { Name = "username", DataType = "string", MaxLength = "50", Notes = "Username for login" },
-        new() { Name = "password", DataType = "string", MaxLength = "50", Notes = "Password for login" }
+        new() { ["Name"] = "username", ["DataType"] = "string", ["MaxLength"] = "50", ["Notes"] = "Username for login" },
+        new() { ["Name"] = "password", ["DataType"] = "string", ["MaxLength"] = "50", ["Notes"] = "Password for login" }
     };
 
-    private List<ApiContentAuthComponent.ApiParamSpecResponse> LoginResponseSpecs = new()
+    private List<Dictionary<string, string>> LoginResponseSpecs = new()
     {
-        new() { Name = "responseCode", DataType = "string", Notes = "Status Code" },
-        new() { Name = "responseMessage", DataType = "string", Notes = "Description" },
-        new() { Name = "data.token", DataType = "string", Notes = "Access Token" }
+        new() { ["Name"] = "responseCode", ["DataType"] = "string", ["Notes"] = "Status Code" },
+        new() { ["Name"] = "responseMessage", ["DataType"] = "string", ["Notes"] = "Description" },
+        new() { ["Name"] = "data.token", ["DataType"] = "string", ["Notes"] = "Access Token" }
     };
 
-    public class EndpointSpec
-    {
-        public string Method { get; set; } = "";
-        public string Path { get; set; } = "";
-        public string Description { get; set; } = "";
-        public bool RequiresAuth { get; set; } = true;
-        public string ResponseCode { get; set; } = "200 OK";
-    }
 
-    List<EndpointSpec> Endpoints = new()
+    private List<Dictionary<string, object>> Endpoints = new()
     {
-        new() { Method = "POST", Path = "/api/auth/login", Description = "Login dan dapatkan JWT token", RequiresAuth = false, ResponseCode = "200 OK" },
-        new() { Method = "GET", Path = "/api/products", Description = "Ambil semua produk", RequiresAuth = true, ResponseCode = "200 OK" },
-        new() { Method = "POST", Path = "/api/products", Description = "Tambah produk baru", RequiresAuth = true, ResponseCode = "201 Created" },
-        new() { Method = "PUT", Path = "/api/products/{id}", Description = "Update produk", RequiresAuth = true, ResponseCode = "204 No Content" },
-        new() { Method = "DELETE", Path = "/api/products/{id}", Description = "Hapus produk", RequiresAuth = true, ResponseCode = "204 No Content" }
+        new() { ["Method"] = "POST", ["Path"] = "/api/login", ["Description"] = "Login and get the token for protected endpoints", ["Auth"] = "Public" },
+        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelines/all", ["Description"] = "Get all voice lines", ["Auth"] = "JWT" },
+        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelines/random", ["Description"] = "Get single random voice line", ["Auth"] = "JWT" },
+        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelines/limit/{limit}", ["Description"] = "Get voice lines as limited number", ["Auth"] = "JWT" },
+        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelines/id/{id}", ["Description"] = "Get single voice line by id", ["Auth"] = "JWT" }
     };
-}
+
+
+},

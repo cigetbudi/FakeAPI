@@ -7,26 +7,39 @@
         <Columns>
             <RadzenDataGridColumn TItem="TItem" Title="Method" Width="80px">
                 <Template Context="data">
-                    <RadzenBadge Text="@GetMethod(data)" Color="@GetMethodColor(GetMethod(data))" />
+                    @{
+                        var method = GetStringValue(data, "Method").ToLower();
+                        var methodClass = $"http-badge http-badge-{method}";
+                    }
+                    <div class="@methodClass">@method.ToUpper()</div>
                 </Template>
             </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="TItem" Property="Path" Title="Path" />
-            <RadzenDataGridColumn TItem="TItem" Property="Description" Title="Description" />
+
+            <RadzenDataGridColumn TItem="TItem" Title="Path">
+                <Template Context="data">
+                    @GetStringValue(data, "Path")
+                </Template>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="TItem" Title="Description">
+                <Template Context="data">
+                    @GetStringValue(data, "Description")
+                </Template>
+            </RadzenDataGridColumn>
+
             <RadzenDataGridColumn TItem="TItem" Title="Auth" Width="100px">
                 <Template Context="data">
-                    @if ((bool)data.GetType().GetProperty("RequiresAuth")?.GetValue(data)!)
-                    {
-                        <RadzenBadge Text="JWT" Color="Dark" />
+                    @{
+                        var auth = GetStringValue(data, "Auth").ToLower();
+                        var badgeClass = auth switch
+                        {
+                            "jwt" => "auth-jwt",
+                            "basic" => "auth-basic",
+                            _ => "auth-public"
+                        };
+                        var authDisplay = string.IsNullOrWhiteSpace(auth) ? "Public" : auth.ToUpper();
                     }
-                    else
-                    {
-                        <RadzenBadge Text="Public" Color="Light" />
-                    }
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="TItem" Title="Response" Width="120px">
-                <Template Context="data">
-                    <RadzenBadge Text="@GetCode(data)" Color="@GetResponseColor(GetCode(data))" />
+                    <div class="auth-badge @badgeClass">@authDisplay</div>
                 </Template>
             </RadzenDataGridColumn>
         </Columns>
@@ -36,29 +49,12 @@
 @code {
     [Parameter] public IEnumerable<TItem> Endpoints { get; set; } = [];
 
-    string GetMethod(TItem data) =>
-        data?.GetType().GetProperty("Method")?.GetValue(data)?.ToString() ?? "";
-
-    string GetCode(TItem data) =>
-        data?.GetType().GetProperty("ResponseCode")?.GetValue(data)?.ToString() ?? "";
-
-    string GetMethodColor(string method) => method.ToUpper() switch
+    string GetStringValue(TItem item, string key)
     {
-        "GET" => "Info",
-        "POST" => "Success",
-        "PUT" => "Warning",
-        "DELETE" => "Danger",
-        _ => "Secondary"
-    };
-
-    string GetResponseColor(string code) => code.Split(' ')[0] switch
-    {
-        "200" => "Success",
-        "201" => "Primary",
-        "204" => "Info",
-        "400" => "Warning",
-        "401" => "Danger",
-        "500" => "Danger",
-        _ => "Light"
-    };
+        if (item is IDictionary<string, object> dict && dict.TryGetValue(key, out var value))
+        {
+            return value?.ToString() ?? string.Empty;
+        }
+        return string.Empty;
+    }
 }
