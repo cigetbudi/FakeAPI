@@ -1,5 +1,5 @@
 <RadzenCard>
-    <RadzenHeading  Size="H3" Text="📋 1. Get All Voice Lines" Style="margin-top: 10px;" class="rz-background-color-secondary-lighter"/>
+    <RadzenHeading Size="H3" Text="📋 4. Get Voice Line By Id" Style="margin-top: 10px;" class="rz-background-color-secondary-lighter" />
     <p>@Description</p>
 
     <RadzenHeading Size="H4" Text="🔗 Path" Style="margin-top: 20px;" />
@@ -8,18 +8,20 @@
     <ApiContentCurlComponent Curl="@RequestCurl" />
     <ApiRespSpecComponent ParamSpecsResponse="@RootResponseSpec" SubHeading="Root Response"/>
     <ApiRespSpecComponent ParamSpecsResponse="@VoiceLineSpec" SubHeading="VoiceLine" IsRoot=false />
-    <RadzenHeading Size="H4" Text="✅ Example" Style="margin-top: 20px;" class="rz-background-color-secondary-lighter"/>
+    <RadzenHeading Size="H4" Text="✅ Example" Style="margin-top: 20px;" />
     <ApiJsonSampleComponent SampleJson=@SampleJson200 StatusCode=200></ApiJsonSampleComponent>
+    <ApiJsonSampleComponent SampleJson=@SampleJson400 StatusCode=400></ApiJsonSampleComponent>
+    <ApiJsonSampleComponent SampleJson=@SampleJson404 StatusCode=404></ApiJsonSampleComponent>
     <ApiJsonSampleComponent StatusCode=401></ApiJsonSampleComponent>
 
 </RadzenCard>
 
 @code {
-    [Parameter] public string Description { get; set; } = "Get all 50 Dota Voice Lines";
-    [Parameter] public string Endpoint { get; set; } = "GET /api/DotaVoiceLinesJWT/all";
+    [Parameter] public string Description { get; set; } = "Get single Dota Voice Line by using Id";
+    [Parameter] public string Endpoint { get; set; } = "GET /api/DotaVoiceLinesJWT/id/{id}";
     [Parameter] public string RequestCurl { get; set; } = @"
     curl -X 'GET' \
-    'https://fakeapi.site/api/DotaVoiceLinesJWT/all' \
+    'https://fakeapi.site/api/DotaVoiceLinesJWT/id/5' \
     -H 'accept: */*' \
     -H 'Authorization: Bearer *token from login*'";
 
@@ -27,34 +29,36 @@
     {
         ""responseCode"": ""200"",
         ""responseMessage"": ""Success"",
-        ""data"": [
-            {
-                ""id"": 12,
-                ""voiceLine"": ""Prepare for battle!"",
-                ""heroName"": ""Sven"",
-                ""length"": 19
-            },
-            {
-                ""id"": 29,
-                ""voiceLine"": ""As bad as things get, I can always come up with a way to make them a little worse."",
-                ""heroName"": ""Ogre Magi"",
-                ""length"": 82
-            },
-            {
-                ""id"": 8,
-                ""voiceLine"": ""So begins a new age of knowledge"",
-                ""heroName"": ""Invoker"",
-                ""length"": 32
-            },
-            ... Until 50 samples
-        ]
+        ""data"": {
+            ""id"": 5,
+            ""voiceLine"": ""I open your throat to close your eyes"",
+            ""heroName"": ""Terrorblade"",
+            ""length"": 37
+        }
     }";
+
+    [Parameter] public string SampleJson400 {get; set;} = @"
+    {
+        ""responseCode"": ""400"",
+        ""responseMessage"": ""Limit is required., Limit must be greater than 0"",
+        ""data"": null
+    }";
+
+    [Parameter] public string SampleJson404 {get; set;} = @"
+    {
+        ""responseCode"": ""404"",
+        ""responseMessage"": ""Voice Line not found"",
+        ""data"": null
+    }";
+
+
+
 
     private List<ApiResponseSpec> RootResponseSpec = new()
     {
         new() { Name = "responseCode", DataType = "string", Notes = "Status code as string (e.g. 200)" },
         new() { Name = "responseMessage", DataType = "string", Notes = "Description of the result" },
-        new() { Name = "data", DataType = "VoiceLine[]", Notes = "List of voice lines" }
+        new() { Name = "data", DataType = "VoiceLine", Notes = "List of voice lines" }
     };
 
     private List<ApiResponseSpec> VoiceLineSpec = new()

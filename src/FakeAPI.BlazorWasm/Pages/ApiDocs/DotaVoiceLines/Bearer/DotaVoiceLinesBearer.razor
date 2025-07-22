@@ -23,8 +23,12 @@
 <ApiContentListTableComponent TItem="Dictionary<string, object>" Endpoints="@Endpoints" />
 <br />
 <GetAllVoiceLinesComponent></GetAllVoiceLinesComponent>
-<br/>
+<br />
 <GetRandomVoiceLineComponent></GetRandomVoiceLineComponent>
+<br />
+<GetLimitedVoiceLinesComponent></GetLimitedVoiceLinesComponent>
+<br />
+<GetVoiceLineByIdComponent></GetVoiceLineByIdComponent>
 
 
 @code {
@@ -60,10 +64,10 @@
     private List<Dictionary<string, object>> Endpoints = new()
     {
         new() { ["Method"] = "POST", ["Path"] = "/api/login", ["Description"] = "Login and get the token for protected endpoints", ["Auth"] = "Public" },
-        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelines/all", ["Description"] = "Get all voice lines", ["Auth"] = "JWT" },
-        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelines/random", ["Description"] = "Get single random voice line", ["Auth"] = "JWT" },
-        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelines/limit/{limit}", ["Description"] = "Get voice lines as limited number", ["Auth"] = "JWT" },
-        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelines/id/{id}", ["Description"] = "Get single voice line by id", ["Auth"] = "JWT" }
+        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelinesJWT/all", ["Description"] = "Get all voice lines", ["Auth"] = "JWT" },
+        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelinesJWT/random", ["Description"] = "Get single random voice line", ["Auth"] = "JWT" },
+        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelinesJWT/limit/{limit}", ["Description"] = "Get voice lines as limited number", ["Auth"] = "JWT" },
+        new() { ["Method"] = "GET", ["Path"] = "/api/dotavoicelinesJWT/id/{id}", ["Description"] = "Get single voice line by id", ["Auth"] = "JWT" }
     };
 
 

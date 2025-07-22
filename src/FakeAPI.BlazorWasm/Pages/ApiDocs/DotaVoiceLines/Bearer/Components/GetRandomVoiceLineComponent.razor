@@ -1,6 +1,5 @@
-@using FakeAPI.BlazorWasm.Pages.Components.ApiContent
 <RadzenCard>
-    <RadzenHeading Size="H3" Text="📋 2. Get Random Voice Line" Style="margin-top: 10px;" />
+    <RadzenHeading Size="H3" Text="📋 2. Get Random Voice Line" Style="margin-top: 10px;" class="rz-background-color-secondary-lighter" />
     <p>@Description</p>
 
     <RadzenHeading Size="H4" Text="🔗 Path" Style="margin-top: 20px;" />
@@ -17,22 +16,23 @@
 
 @code {
     [Parameter] public string Description { get; set; } = "Get single random Dota Voice Line";
-    [Parameter] public string Endpoint { get; set; } = "POST /api/DotaVoiceLinesJWT/random";
+    [Parameter] public string Endpoint { get; set; } = "GET /api/DotaVoiceLinesJWT/random";
     [Parameter] public string RequestCurl { get; set; } = @"
     curl -X 'GET' \
     'https://fakeapi.site/api/DotaVoiceLinesJWT/random' \
     -H 'accept: */*' \
-    -H 'Authorization: Bearer *token from login*'";
+    -H 'Authorization: Bearer *token from login*'
+    ";
 
     [Parameter] public string SampleJson200 { get; set; } = @"
-    ""responseCode"": ""200"",
-    ""responseMessage"": ""Success"",
-    ""data"": {
-        ""id"": 13,
-        ""voiceLine"": ""I'm the Juggernaut, lich!"",
-        ""heroName"": ""Juggernaut"",
-        ""length"": 25
-    }
+    {
+        ""responseCode"": ""200"",
+        ""responseMessage"": ""Success"",
+        ""data"": {
+            ""id"": 13,
+            ""voiceLine"": ""I'm the Juggernaut, lich!"",
+            ""heroName"": ""Juggernaut"",
+            ""length"": 25
     }";
 
     private List<ApiResponseSpec> RootResponseSpec = new()
