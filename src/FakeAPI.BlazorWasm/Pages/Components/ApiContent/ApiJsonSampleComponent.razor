@@ -1,0 +1,26 @@
+<RadzenPanel AllowCollapse="true" Expanded="false" Style="margin-top: 20px;">
+    <HeaderTemplate>@Status(StatusCode)</HeaderTemplate>
+    <ChildContent>
+        @if (!string.IsNullOrWhiteSpace(SampleJson))
+        {
+            <RadzenCard Style="margin-top: 10px;" Variant="Variant.Outlined">
+                <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">@SampleJson</pre>
+            </RadzenCard>
+        }
+    </ChildContent>
+</RadzenPanel>
+
+
+@code {
+    [Parameter] public string SampleJson { get; set; } = "";
+    [Parameter] public int StatusCode { get; set; } = 200;
+    public string Status(int status)
+    {
+        return status switch
+        {
+            200 => "🟢 Successful HTTP Status : 200",
+            401 => "🔴 Failed HTTP Status : 401",
+            _ => $"🔴 Failed HTTP Status : {status}"
+        };
+    }
+}
