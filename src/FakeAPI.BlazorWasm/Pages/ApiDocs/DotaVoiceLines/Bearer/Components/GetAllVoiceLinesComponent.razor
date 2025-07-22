@@ -1,0 +1,31 @@
+@using FakeAPI.BlazorWasm.Pages.Components.ApiContent
+
+<RadzenCard>
+    <RadzenHeading Size="H3" Text="📋 1. Get All Voice Lines" Style="margin-top: 10px;" />
+    <p>@Description</p>
+
+    <RadzenHeading Size="H4" Text="🔗 Path" Style="margin-top: 20px;" />
+    <RadzenLabel Text="@Endpoint" Style="font-weight: bold;" />
+
+    <ApiContentCurlComponent Curl="@RequestCurl"></ApiContentCurlComponent>
+
+    <ApiRespSpecComponent ParamSpecsResponse="@LoginResponseSpecs"></ApiRespSpecComponent>
+</RadzenCard>
+
+@code {
+    [Parameter] public string Description { get; set; } = "Get all Dota Voice Lines";
+    [Parameter] public string Endpoint { get; set; } = "POST /api/DotaVoiceLinesJWT/all";
+
+    [Parameter] public string RequestCurl { get; set; } = @"
+    curl -X 'GET' \
+    'https://fakeapi.site/api/DotaVoiceLinesJWT/all' \
+    -H 'accept: */*' \
+    -H 'Authorization: Bearer *token from login*'";
+    
+    private List<ApiResponseSpec> LoginResponseSpecs = new()
+    {
+        new() { Name = "responseCode", DataType = "string", Notes = "Status Code" },
+        new() { Name = "responseMessage", DataType = "string", Notes = "Description" },
+        new() { Name = "data.token", DataType = "string", Notes = "Access Token" }
+    };
+}

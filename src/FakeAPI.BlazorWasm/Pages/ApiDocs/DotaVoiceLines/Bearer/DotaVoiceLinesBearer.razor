@@ -1,4 +1,5 @@
 @page "/api-docs/dota-voice-lines/bearer"
+@using FakeAPI.BlazorWasm.Pages.ApiDocs.DotaVoiceLines.Bearer.Components
 @using FakeAPI.BlazorWasm.Pages.Components.ApiContent
 @using System.Text.Json
 @using static FakeAPI.BlazorWasm.Pages.Components.ApiContent.ApiContentAuthComponent
@@ -20,6 +21,9 @@
     ParamSpecsResponse="@LoginResponseSpecs" />
 
 <ApiContentListTableComponent TItem="Dictionary<string, object>" Endpoints="@Endpoints" />
+<br />
+@* getallvoicelines *@
+<GetAllVoiceLinesComponent></GetAllVoiceLinesComponent>
 
 
 @code {
@@ -62,4 +66,4 @@
     };
 
 
-},
+}

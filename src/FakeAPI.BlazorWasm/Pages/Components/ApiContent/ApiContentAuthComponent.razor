@@ -29,7 +29,7 @@
             <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">@SampleJson</pre>
         </RadzenCard>
 
-        <ApiContentCurlComponent></ApiContentCurlComponent>
+        <ApiContentCurlComponent Curl="@Curl"></ApiContentCurlComponent>
     }
 
     @if (ParamSpecsResponse?.Any() == true)
@@ -82,4 +82,14 @@
     // Ganti ke List of Dictionary<string, string>
     [Parameter] public List<Dictionary<string, string>>? ParamSpecs { get; set; }
     [Parameter] public List<Dictionary<string, string>>? ParamSpecsResponse { get; set; }
+
+    [Parameter] public string Curl { get; set; } = @"
+    curl -X POST https://fakeapi.site/api/login \
+    -H 'accept: */*' \
+    -H 'Content-Type: application/json' \
+    -d '{
+        ""username"": ""bearerusername"",
+        ""password"": ""BearerPassword!123""
+    }'";
+
 }
