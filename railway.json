@@ -1,0 +1,15 @@
+{
+    "services": [
+      {
+        "name": "api",
+        "dockerfilePath": "Dockerfile.Api",
+        "port": 5121
+      },
+      {
+        "name": "frontend",
+        "dockerfilePath": "Dockerfile.fe",
+        "port": 80
+      }
+    ]
+  }
+  

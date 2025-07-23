@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.Api
+    ports:
+      - "5121:5121"
+    environment:
+      - ASPNETCORE_URLS=http://+:5121
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.fe
+    ports:
+      - "80:80"
