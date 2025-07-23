@@ -151,3 +151,65 @@ code {
     align-items: center;
     gap: 8px;
 }
+
+
+.http-badge {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    display: inline-block;
+}
+
+.http-badge-get {
+    background-color: #28a74520;
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+
+.http-badge-post {
+    background-color: #007bff20;
+    color: #007bff;
+    border: 1px solid #007bff;
+}
+
+.http-badge-put {
+    background-color: #ffc10720;
+    color: #ffc107;
+    border: 1px solid #ffc107;
+}
+
+.http-badge-delete {
+    background-color: #dc354520;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+
+.auth-badge {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    display: inline-block;
+}
+
+.auth-public {
+    background-color: #007bff20;
+    color: #007bff;
+    border: 1px solid #007bff;
+}
+
+.auth-jwt {
+    background-color: #6f42c120;
+    color: #6f42c1;
+    border: 1px solid #6f42c1;
+}
+
+.auth-basic {
+    background-color: #17a2b820;
+    color: #17a2b8;
+    border: 1px solid #17a2b8;
+}

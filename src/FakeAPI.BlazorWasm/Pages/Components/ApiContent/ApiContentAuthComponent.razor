@@ -1,5 +1,4 @@
 @using System.Text.Json
-@using Microsoft.AspNetCore.Components
 
 <RadzenCard Style="margin-bottom: 20px;">
     <RadzenHeading Size="H4" Text="@Title" />
@@ -12,58 +11,63 @@
     {
         <RadzenHeading Size="H4" Text="📗 API Request Specification" Style="margin-top: 30px;" />
 
-        <RadzenDataGrid 
-            Data="@ParamSpecs" 
-            TItem="ApiParamSpec" 
-            ShowPagingSummary="false" 
-            ShowPagination="false" 
-            Style="margin-top: 10px;">
+        <RadzenDataGrid Data="@ParamSpecs" TItem="Dictionary<string, string>" ShowPagingSummary="false" ShowPagination="false" Style="margin-top: 10px;">
             <Columns>
-                <RadzenDataGridColumn TItem="ApiParamSpec" Property="Name" Title="Name" />
-                <RadzenDataGridColumn TItem="ApiParamSpec" Property="DataType" Title="Type" />
-                <RadzenDataGridColumn TItem="ApiParamSpec" Property="MaxLength" Title="Length" />
-                <RadzenDataGridColumn TItem="ApiParamSpec" Property="Notes" Title="Description" />
+                @foreach (var key in ParamSpecs[0].Keys)
+                {
+                    <RadzenDataGridColumn TItem="Dictionary<string, string>" Title="@key">
+                        <Template Context="row">
+                            @row[key]
+                        </Template>
+                    </RadzenDataGridColumn>
+                }
             </Columns>
         </RadzenDataGrid>
 
         <RadzenHeading Size="H4" Text="✅ Example" Style="margin-top: 20px;" />
-        <RadzenCard Style="margin-top: 10px;">
-            <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">
-@SampleJson
-            </pre>
+        <RadzenCard Style="margin-top: 10px;" Variant="Variant.Outlined">
+            <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">@SampleJson</pre>
         </RadzenCard>
+
+        <ApiContentCurlComponent Curl="@Curl"></ApiContentCurlComponent>
     }
 
     @if (ParamSpecsResponse?.Any() == true)
     {
         <RadzenHeading Size="H4" Text="📗 API Response Specification" Style="margin-top: 40px;" />
 
-        <RadzenDataGrid 
-            Data="@ParamSpecsResponse" 
-            TItem="ApiParamSpecResponse" 
-            ShowPagingSummary="false" 
-            ShowPagination="false" 
-            Style="margin-top: 10px;">
+        <RadzenDataGrid Data="@ParamSpecsResponse" TItem="Dictionary<string, string>" ShowPagingSummary="false" ShowPagination="false" Style="margin-top: 10px;">
             <Columns>
-                <RadzenDataGridColumn TItem="ApiParamSpecResponse" Property="Name" Title="Name" />
-                <RadzenDataGridColumn TItem="ApiParamSpecResponse" Property="DataType" Title="Type" />
-                <RadzenDataGridColumn TItem="ApiParamSpecResponse" Property="Notes" Title="Description" />
+                @foreach (var key in ParamSpecsResponse[0].Keys)
+                {
+                    <RadzenDataGridColumn TItem="Dictionary<string, string>" Title="@key">
+                        <Template Context="row">
+                            @row[key]
+                        </Template>
+                    </RadzenDataGridColumn>
+                }
             </Columns>
         </RadzenDataGrid>
 
         <RadzenHeading Size="H4" Text="✅ Example" Style="margin-top: 20px;" />
-        <RadzenHeading Size="H5" Text="🟢 Successfull HTTP Status : 200" Style="margin-top: 20px;" />
-          <RadzenCard Style="margin-top: 10px;">
-              <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">
-      @SampleJsonResponseSuccess
-              </pre>
-        </RadzenCard>
-        <RadzenHeading Size="H5" Text="🔴 Failed HTTP Status : 401" Style="margin-top: 20px;" />
-          <RadzenCard Style="margin-top: 10px;">
-              <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">
-      @SampleJsonResponseFailed
-              </pre>
-        </RadzenCard>
+
+        <RadzenPanel AllowCollapse="true" Expanded="false" Style="margin-top: 20px;">
+            <HeaderTemplate>🟢 Successfull HTTP Status : 200</HeaderTemplate>
+            <ChildContent>
+                <RadzenCard Style="margin-top: 10px;" Variant="Variant.Outlined">
+                    <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">@SampleJsonResponseSuccess</pre>
+                </RadzenCard>
+            </ChildContent>
+        </RadzenPanel>
+
+        <RadzenPanel AllowCollapse="true" Expanded="false" Style="margin-top: 20px;">
+            <HeaderTemplate>🔴 Failed HTTP Status : 401</HeaderTemplate>
+            <ChildContent>
+                <RadzenCard Style="margin-top: 10px;" Variant="Variant.Outlined">
+                    <pre style="margin: 0; padding: 10px; white-space: pre-wrap;">@SampleJsonResponseFailed</pre>
+                </RadzenCard>
+            </ChildContent>
+        </RadzenPanel>
     }
 </RadzenCard>
 
@@ -74,21 +78,18 @@
     [Parameter] public string SampleJson { get; set; } = "";
     [Parameter] public string? SampleJsonResponseSuccess { get; set; }
     [Parameter] public string? SampleJsonResponseFailed { get; set; }
-    [Parameter] public List<ApiParamSpec>? ParamSpecs { get; set; }
-    [Parameter] public List<ApiParamSpecResponse>? ParamSpecsResponse { get; set; }
 
-    public class ApiParamSpec
-    {
-        public string Name { get; set; } = "";
-        public string DataType { get; set; } = "";
-        public string MaxLength { get; set; } = "";
-        public string Notes { get; set; } = "";
-    }
+    // Ganti ke List of Dictionary<string, string>
+    [Parameter] public List<Dictionary<string, string>>? ParamSpecs { get; set; }
+    [Parameter] public List<Dictionary<string, string>>? ParamSpecsResponse { get; set; }
 
-    public class ApiParamSpecResponse
-    {
-        public string Name { get; set; } = "";
-        public string DataType { get; set; } = "";
-        public string Notes { get; set; } = "";
-    }
+    [Parameter] public string Curl { get; set; } = @"
+    curl -X POST https://fakeapi.site/api/login \
+    -H 'accept: */*' \
+    -H 'Content-Type: application/json' \
+    -d '{
+        ""username"": ""bearerusername"",
+        ""password"": ""BearerPassword!123""
+    }'";
+
 }

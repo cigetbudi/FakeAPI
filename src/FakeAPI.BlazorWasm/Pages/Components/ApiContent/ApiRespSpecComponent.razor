@@ -1,0 +1,25 @@
+@if(IsRoot)
+{
+<RadzenHeading Size="H4" Text="📗 API Response Specification" Style="margin-top: 40px;" class="rz-background-color-secondary-lighter"/>
+}
+@if (SubHeading?.Any() == true) 
+{
+    <RadzenHeading Size="H5" Text="@SubHeading" Style="margin-top: 20px;" />
+}
+
+@if (ParamSpecsResponse?.Any() == true)
+{
+    <RadzenDataGrid Data="@ParamSpecsResponse" TItem="ApiResponseSpec" ShowPagingSummary="false" ShowPagination="false" Style="margin-top: 10px;">
+        <Columns>
+            <RadzenDataGridColumn TItem="ApiResponseSpec" Property="Name" Title="Name" />
+            <RadzenDataGridColumn TItem="ApiResponseSpec" Property="DataType" Title="Data Type" />
+            <RadzenDataGridColumn TItem="ApiResponseSpec" Property="Notes" Title="Notes" />
+        </Columns>
+    </RadzenDataGrid>
+}
+
+@code {
+    [Parameter] public List<ApiResponseSpec>? ParamSpecsResponse { get; set; }
+    [Parameter] public string SubHeading {get; set;} = string.Empty;
+    [Parameter] public bool IsRoot {get; set;} = true;
+}

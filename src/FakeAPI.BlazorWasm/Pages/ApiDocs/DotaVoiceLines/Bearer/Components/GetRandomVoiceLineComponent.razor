@@ -1,0 +1,54 @@
+<RadzenCard>
+    <RadzenHeading Size="H3" Text="📋 2. Get Random Voice Line" Style="margin-top: 10px;" class="rz-background-color-secondary-lighter" />
+    <p>@Description</p>
+
+    <RadzenHeading Size="H4" Text="🔗 Path" Style="margin-top: 20px;" />
+    <RadzenLabel Text="@Endpoint" Style="font-weight: bold;" />
+
+    <ApiContentCurlComponent Curl="@RequestCurl" />
+    <ApiRespSpecComponent ParamSpecsResponse="@RootResponseSpec" SubHeading="Root Response"/>
+    <ApiRespSpecComponent ParamSpecsResponse="@VoiceLineSpec" SubHeading="VoiceLine" IsRoot=false />
+    <RadzenHeading Size="H4" Text="✅ Example" Style="margin-top: 20px;" />
+    <ApiJsonSampleComponent SampleJson=@SampleJson200 StatusCode=200></ApiJsonSampleComponent>
+    <ApiJsonSampleComponent StatusCode=401></ApiJsonSampleComponent>
+
+</RadzenCard>
+
+@code {
+    [Parameter] public string Description { get; set; } = "Get single random Dota Voice Line";
+    [Parameter] public string Endpoint { get; set; } = "GET /api/DotaVoiceLinesJWT/random";
+    [Parameter] public string RequestCurl { get; set; } = @"
+    curl -X 'GET' \
+    'https://fakeapi.site/api/DotaVoiceLinesJWT/random' \
+    -H 'accept: */*' \
+    -H 'Authorization: Bearer *token from login*'
+    ";
+
+    [Parameter] public string SampleJson200 { get; set; } = @"
+    {
+        ""responseCode"": ""200"",
+        ""responseMessage"": ""Success"",
+        ""data"": {
+            ""id"": 13,
+            ""voiceLine"": ""I'm the Juggernaut, lich!"",
+            ""heroName"": ""Juggernaut"",
+            ""length"": 25
+    }";
+
+    private List<ApiResponseSpec> RootResponseSpec = new()
+    {
+        new() { Name = "responseCode", DataType = "string", Notes = "Status code as string (e.g. 200)" },
+        new() { Name = "responseMessage", DataType = "string", Notes = "Description of the result" },
+        new() { Name = "data", DataType = "VoiceLine", Notes = "List of voice lines" }
+    };
+
+    private List<ApiResponseSpec> VoiceLineSpec = new()
+    {
+        new() { Name = "id", DataType = "int", Notes = "Unique voice line ID" },
+        new() { Name = "voiceLine", DataType = "string", Notes = "Quote spoken by the hero" },
+        new() { Name = "heroName", DataType = "string", Notes = "Hero name" },
+        new() { Name = "length", DataType = "int", Notes = "Quote length in characters" }
+    };
+
+
+}

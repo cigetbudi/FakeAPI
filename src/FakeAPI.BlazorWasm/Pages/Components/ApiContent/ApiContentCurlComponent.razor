@@ -1,0 +1,14 @@
+<RadzenPanel AllowCollapse="true" Expanded="false">
+    <HeaderTemplate>⌨️ Curl Command</HeaderTemplate>
+    <ChildContent>
+        <RadzenCard  Variant="Variant.Outlined">
+            <pre>@Curl</pre>
+        </RadzenCard>
+    </ChildContent>
+</RadzenPanel>
+
+@code {
+    [Parameter] public string Curl { get; set; } = string.Empty;
+
+}
+
