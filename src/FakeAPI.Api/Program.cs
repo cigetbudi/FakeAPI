@@ -11,6 +11,8 @@ using FluentValidation;
 using App = FakeAPI.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication;
+using FakeAPI.Infrastructure.Common.Auth;
 
 
 
@@ -130,6 +132,11 @@ try
             });
         }
     });
+
+    // Basic Auth
+    builder.Services.AddAuthentication("BasicAuth")
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("BasicAuth", null);
+
 
     // Bearer token JWT
     builder.Services.AddAuthentication("Bearer")
